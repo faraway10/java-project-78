@@ -1,30 +1,27 @@
 package hexlet.code.schemas;
 
-public class StringSchema {
-    private boolean isRequired;
+public class StringSchema extends BaseSchema {
     private int minLength;
     private String requiredSubStr;
 
     public StringSchema() { }
 
     public void required() {
-        isRequired = true;
+        super.required();
     }
 
     public StringSchema minLength(int length) {
-        isRequired = true;
         minLength = length;
         return this;
     }
 
     public StringSchema contains(String str) {
-        isRequired = true;
         requiredSubStr = str;
         return this;
     }
 
     public boolean isValid(String str) {
-        if (!isRequired) {
+        if (!super.isRequired()) {
             return true;
         }
 
