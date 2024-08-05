@@ -7,8 +7,9 @@ public class StringSchema extends BaseSchema<String> {
     public StringSchema() { }
 
     @Override
-    public void required() {
+    public StringSchema required() {
         super.required();
+        return this;
     }
 
     public StringSchema minLength(int length) {

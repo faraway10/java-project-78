@@ -3,8 +3,9 @@ package hexlet.code.schemas;
 public abstract class BaseSchema<T> {
     private boolean isRequired;
 
-    public void required() {
+    public BaseSchema<T> required() {
         isRequired = true;
+        return this;
     }
 
     public boolean isRequired() {

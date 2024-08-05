@@ -8,8 +8,9 @@ public class NumberSchema extends BaseSchema<Integer> {
     public NumberSchema() { }
 
     @Override
-    public void required() {
+    public NumberSchema required() {
         super.required();
+        return this;
     }
 
     public NumberSchema positive() {
