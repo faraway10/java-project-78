@@ -1,6 +1,7 @@
 package hexlet.code;
 
 import hexlet.code.schemas.BaseSchema;
+import hexlet.code.schemas.MapSchema;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -166,32 +167,30 @@ public class ValidatorTest {
     @Test
     public void testMixedShapeSchemas() {
         var v = new Validator();
-
-        var schema = v.map();
-
         Map<String, BaseSchema> schemas = new HashMap<>();
 
-        schemas.put("name", v.string().required().minLength(2));
+        schemas.put("name", v.string().required());
         schemas.put("age", v.number().required().positive());
 
-        schema.shape(schemas);
+        MapSchema schema = v.map().sizeof(2).required().shape(schemas);
 
-        Map<Object, Object> human1 = new HashMap<>();
+        Map<String, Object> human1 = new HashMap<>();
         human1.put("name", "Pepe");
         human1.put("age", 29);
-        human1.put(0, 0);
         assertTrue(schema.isValid(human1)); // true
 
-        Map<Object, Object> human2 = new HashMap<>();
-        human2.put("name", "P");
+        Map<String, Object> human2 = new HashMap<>();
+        human2.put("name", "");
         human2.put("age", 29);
-        human2.put(0, 0);
         assertFalse(schema.isValid(human2)); // false
 
-        Map<Object, Object> human3 = new HashMap<>();
+        Map<String, Object> human3 = new HashMap<>();
         human3.put("name", "Pepe");
         human3.put("age", -29);
-        human3.put(0, 0);
         assertFalse(schema.isValid(human3)); // false
+
+        Map<String, Object> human4 = new HashMap<>();
+        human4.put("name", "Pepe");
+        assertFalse(schema.isValid(human4)); // false
     }
 }

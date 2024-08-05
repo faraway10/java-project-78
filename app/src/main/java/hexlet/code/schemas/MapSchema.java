@@ -19,9 +19,10 @@ public final class MapSchema<T> extends BaseSchema<Map> {
         return this;
     }
 
-    public void shape(Map<String, BaseSchema<T>> schemas) {
+    public MapSchema shape(Map<String, BaseSchema<T>> schemas) {
         shapeSchemas = schemas;
         isShaped = true;
+        return this;
     }
 
     @Override
