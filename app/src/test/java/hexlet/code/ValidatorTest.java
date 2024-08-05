@@ -175,7 +175,7 @@ public class ValidatorTest {
         schemas.put("age", v.number().required().positive());
 
         schema.shape(schemas);
-        
+
         Map<Object, Object> human1 = new HashMap<>();
         human1.put("name", "Pepe");
         human1.put("age", 29);
