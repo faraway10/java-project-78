@@ -2,14 +2,15 @@ package hexlet.code.schemas;
 
 import java.util.Map;
 
-public class MapSchema<T> extends BaseSchema<Map> {
+public final class MapSchema<T> extends BaseSchema<Map> {
+    private boolean isRequired;
     private Integer requiredSize;
     private Map<String, BaseSchema<T>> shapeSchemas;
     private boolean isShaped;
 
     @Override
     public MapSchema required() {
-        super.required();
+        isRequired = true;
         return this;
     }
 
@@ -26,7 +27,7 @@ public class MapSchema<T> extends BaseSchema<Map> {
     @Override
 //    @SuppressWarnings("unchecked")
     public boolean isValid(Map map) {
-        if (!super.isRequired() && !isShaped) {
+        if (!isRequired && !isShaped) {
             return true;
         }
 

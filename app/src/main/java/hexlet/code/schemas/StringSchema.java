@@ -1,6 +1,7 @@
 package hexlet.code.schemas;
 
-public class StringSchema extends BaseSchema<String> {
+public final class StringSchema extends BaseSchema<String> {
+    private boolean isRequired;
     private int minLength;
     private String requiredSubStr;
 
@@ -8,7 +9,7 @@ public class StringSchema extends BaseSchema<String> {
 
     @Override
     public StringSchema required() {
-        super.required();
+        isRequired = true;
         return this;
     }
 
@@ -24,7 +25,7 @@ public class StringSchema extends BaseSchema<String> {
 
     @Override
     public boolean isValid(String str) {
-        if (!super.isRequired()) {
+        if (!isRequired) {
             return true;
         }
 
