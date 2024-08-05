@@ -97,7 +97,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void testShapeSchemas() {
+    public void testStringShapeSchemas() {
         var v = new Validator();
 
         var schema = v.map();
@@ -108,7 +108,6 @@ public class ValidatorTest {
         Map<String, BaseSchema<String>> schemas = new HashMap<>();
 
         // Определяем схемы валидации для значений свойств "firstName" и "lastName"
-        // Имя должно быть строкой, обязательно для заполнения
         schemas.put("firstName", v.string().required());
         // Фамилия обязательна для заполнения и должна содержать не менее 2 символов
         schemas.put("lastName", v.string().required().minLength(2));
@@ -131,6 +130,68 @@ public class ValidatorTest {
         Map<String, String> human3 = new HashMap<>();
         human3.put("firstName", "Anna");
         human3.put("lastName", "B");
+        assertFalse(schema.isValid(human3)); // false
+    }
+
+    @Test
+    public void testNumberShapeSchemas() {
+        var v = new Validator();
+
+        var schema = v.map();
+
+        Map<String, BaseSchema<Integer>> schemas = new HashMap<>();
+
+        schemas.put("score", v.number().required());
+        schemas.put("point", v.number().required().positive());
+
+        schema.shape(schemas);
+
+        // Проверяем объекты
+        Map<String, Integer> human1 = new HashMap<>();
+        human1.put("score", 2);
+        human1.put("point", 9);
+        assertTrue(schema.isValid(human1)); // true
+
+        Map<String, Integer> human2 = new HashMap<>();
+        human2.put("score", 2);
+        human2.put("point", null);
+        assertFalse(schema.isValid(human2)); // false
+
+        Map<String, Integer> human3 = new HashMap<>();
+        human3.put("score", 2);
+        human3.put("point", -9);
+        assertFalse(schema.isValid(human3)); // false
+    }
+
+    @Test
+    public void testMixedShapeSchemas() {
+        var v = new Validator();
+
+        var schema = v.map();
+
+        Map<String, BaseSchema> schemas = new HashMap<>();
+
+        schemas.put("name", v.string().required().minLength(2));
+        schemas.put("age", v.number().required().positive());
+
+        schema.shape(schemas);
+        
+        Map<Object, Object> human1 = new HashMap<>();
+        human1.put("name", "Pepe");
+        human1.put("age", 29);
+        human1.put(0, 0);
+        assertTrue(schema.isValid(human1)); // true
+
+        Map<Object, Object> human2 = new HashMap<>();
+        human2.put("name", "P");
+        human2.put("age", 29);
+        human2.put(0, 0);
+        assertFalse(schema.isValid(human2)); // false
+
+        Map<Object, Object> human3 = new HashMap<>();
+        human3.put("name", "Pepe");
+        human3.put("age", -29);
+        human3.put(0, 0);
         assertFalse(schema.isValid(human3)); // false
     }
 }
