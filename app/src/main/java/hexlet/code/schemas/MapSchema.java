@@ -2,16 +2,13 @@ package hexlet.code.schemas;
 
 import java.util.Map;
 
-public final class MapSchema<T> extends BaseSchema<Map> {
-//    private Map<String, BaseSchema<T>> shapeSchemas;
-//    private boolean isShaped;
-
-    public MapSchema required() {
+public final class MapSchema<T> extends BaseSchema<Map<String, T>> {
+    public MapSchema<T> required() {
         setRequired();
         return this;
     }
 
-    public MapSchema sizeof(int size) {
+    public MapSchema<T> sizeof(int size) {
         addCheck(
                 "sizeof",
                 value -> value.size() == size
@@ -19,22 +16,23 @@ public final class MapSchema<T> extends BaseSchema<Map> {
         return this;
     }
 
-//    public MapSchema shape(Map<String, BaseSchema<T>> schemas) {
-//        shapeSchemas = schemas;
-//        isShaped = true;
-//        return this;
-//    }
-//
-//    public boolean isShapeValid(Map<String, T> map) {
-//        for (var key : shapeSchemas.keySet()) {
-//            var schema = shapeSchemas.get(key);
-//            T value = map.get(key);
-//
-//            if (!schema.isValid(value)) {
-//                return false;
-//            }
-//        }
-//
-//        return true;
-//    }
+    public MapSchema<T> shape(Map<String, BaseSchema<T>> schemas) {
+        addCheck(
+                "shape",
+                map -> {
+                    for (String key : schemas.keySet()) {
+                        var schema = schemas.get(key);
+                        T value = map.get(key);
+
+                        if (!schema.isValid(value)) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+        );
+        setRequired();
+        return this;
+    }
 }
